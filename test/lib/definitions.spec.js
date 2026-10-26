@@ -69,14 +69,14 @@ self,
         return validator;
     }
 
-    function isExpectedMaybeCombinedString(expected)
+    function isExpectedString(expected)
     {
         var validator =
         function ()
         {
             this.toBe(expected);
         };
-        validator.expectedComputedTypes = SolutionType.STRING | SolutionType.COMBINED_STRING;
+        validator.expectedSource = expected;
         return validator;
     }
 
@@ -180,6 +180,21 @@ self,
             );
         }
 
+        function testStatic()
+        {
+            it
+            (
+                '(static definition)',
+                function ()
+                {
+                    var encoder = getPoolEncoder(Feature.DEFAULT);
+                    var solution = encoder.resolveCharacter(char);
+                    expect(solution.entryCode).toBe('static');
+                    verifyStringSolution(solution, char);
+                }
+            );
+        }
+
         function verifyFEntry(entry, dispositions, varieties)
         {
             var entryFeatureObj = getEntryFeature(entry);
@@ -272,65 +287,99 @@ self,
 
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
-        if (entries)
+        if (!entries)
+            testDefault();
+        else if (Array.isArray(entries))
         {
             var defaultEntryFound = false;
-            if (entries)
-                entries.forEach(testEntry);
+            entries.forEach(testEntry);
             if (!defaultEntryFound)
                 testDefault();
         }
         else
-            testDefault();
+            testStatic();
     }
 
     function testConstant(constant, validator, namedSolutionTypes)
     {
-        var entries = JScrewIt.debug.getConstantEntries(constant);
-        entries.forEach
-        (
-            function (entry, index)
+        function testEntry(entry, index)
+        {
+            var featureObj = getEntryFeature(entry);
+            emuIt
+            (
+                '(definition ' + index + ')',
+                featureObj,
+                function ()
+                {
+                    var solution = decodeEntry(entry, undefined, SolutionType.OBJECT);
+                    verifySolution(solution, this.test.emuFeatureNames);
+                }
+            );
+        }
+
+        function testStatic()
+        {
+            it
+            (
+                '(static definition)',
+                function ()
+                {
+                    var encoder = getPoolEncoder(Feature.DEFAULT);
+                    var solution = encoder.resolveConstant(constant);
+                    expect(solution.entryCode).toBe('static');
+                    verifySolution(solution, []);
+                }
+            );
+        }
+
+        function verifySolution(solution, emuFeatureNames)
+        {
+            expect(typeof solution).toBe('object');
+            var replacement = solution.replacement;
+            expect(replacement).toBeJSFuck();
+            var actualSolutionType = solution.type;
+            if (namedSolutionTypes)
+                expect(namedSolutionTypes).toContain(actualSolutionType);
+            var actualSource = solution.source;
+            if (validator)
             {
-                var featureObj = getEntryFeature(entry);
-                emuIt
-                (
-                    '(definition ' + index + ')',
-                    featureObj,
-                    function ()
-                    {
-                        var solution = decodeEntry(entry, undefined, SolutionType.OBJECT);
-                        expect(typeof solution).toBe('object');
-                        var replacement = solution.replacement;
-                        expect(replacement).toBeJSFuck();
-                        expect(solution.source).toBeUndefined();
-                        var definedSolutionType = solution.type;
-                        if (namedSolutionTypes)
-                            expect(namedSolutionTypes).toContain(definedSolutionType);
-                        if (validator)
-                            var expectedComputedTypes = validator.expectedComputedTypes;
-                        expectedComputedTypes = expectedComputedTypes || definedSolutionType;
-                        emuDo
-                        (
-                            this.test.emuFeatureNames,
-                            function ()
-                            {
-                                var actual = evalJSFuck(replacement);
-                                if (validator)
-                                    validator.call(expect(actual));
-                                var actualComputedType =
-                                JScrewIt.debug.calculateSolutionType(replacement);
-                                expect(actualComputedType)
-                                .toBe
-                                (
-                                    expectedComputedTypes & actualComputedType,
-                                    'Solution type mismatch'
-                                );
-                            }
-                        );
-                    }
-                );
+                var expectedComputedTypes   = validator.expectedComputedTypes;
+                var expectedSource          = validator.expectedSource;
             }
-        );
+            if (typeof expectedSource === 'string')
+                expect(actualSource).toBe(expectedSource);
+            var actual;
+            var actualComputedType;
+            emuDo
+            (
+                emuFeatureNames,
+                function ()
+                {
+                    actual = evalJSFuck(replacement);
+                    if (validator)
+                        validator.call(expect(actual));
+                    actualComputedType = JScrewIt.debug.calculateSolutionType(replacement);
+                }
+            );
+            if (actualSource !== undefined)
+            {
+                expect(SolutionType.isString(actualSolutionType))
+                .toBeTruthy('String solution should have a string type');
+                expect(actualSource).toBeString();
+                expect(actual).toBe(actualSource);
+            }
+            var expectedComputedType =
+            expectedComputedTypes ?
+            expectedComputedTypes & actualComputedType : actualSolutionType;
+            expect(actualComputedType)
+            .toBe(expectedComputedType, 'Computed solution type mismatch');
+        }
+
+        var entries = JScrewIt.debug.getConstantEntries(constant);
+        if (Array.isArray(entries))
+            entries.forEach(testEntry);
+        else
+            testStatic();
     }
 
     function testShortcut(shortcut)
@@ -366,7 +415,8 @@ self,
                 expect(actual).toBe(expected);
                 var expectedComputedType = solution.type;
                 var actualComputedType = JScrewIt.debug.calculateSolutionType(replacement);
-                expect(actualComputedType).toBe(expectedComputedType, 'Solution type mismatch');
+                expect(actualComputedType)
+                .toBe(expectedComputedType, 'Computed solution type mismatch');
             }
         );
     }
@@ -470,7 +520,7 @@ self,
                 {
                     this.toBe(Array.prototype.at);
                 },
-                CONCAT:             isExpected('concat'),
+                CONCAT:             isExpectedString('concat'),
                 FBEP_9_U:           isExpectedBooleanOrUndefined(),
                 FBP_9_U:            isExpectedBooleanOrUndefined(),
                 FILTER:
@@ -493,7 +543,7 @@ self,
                 {
                     this.toBeBoolean();
                 },
-                JOIN:               isExpected('join'),
+                JOIN:               isExpectedString('join'),
                 LOCALE_AR:
                 function ()
                 {
@@ -504,7 +554,7 @@ self,
                 {
                     this.toMatch(/^he$/i);
                 },
-                MAP:                isExpectedMaybeCombinedString('map'),
+                MAP:                isExpectedString('map'),
                 PLAIN_OBJECT:
                 function ()
                 {
@@ -520,9 +570,9 @@ self,
                 {
                     this.toMatch(/^(?:slice|substr)$/);
                 },
-                SPLIT:              isExpected('split'),
-                TO_LOCALE_STRING:   isExpected('toLocaleString'),
-                TO_STRING:          isExpected('toString'),
+                SPLIT:              isExpectedString('split'),
+                TO_LOCALE_STRING:   isExpectedString('toLocaleString'),
+                TO_STRING:          isExpectedString('toString'),
             };
             var paramDataList =
             JScrewIt.debug.getConstantNames().map

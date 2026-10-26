@@ -49,15 +49,15 @@ function appendTerm(parseInfo, term)
         if (terms && isUndecoratedUnit(unit))
         {
             terms.push(term);
-            if (!term.arithmetic)
-                unit.arithmetic = false;
+            if (!term.algebraic)
+                unit.algebraic = false;
         }
         else
         {
             if (!finalizeUnit(unit))
                 return;
-            var arithmetic = unit.arithmetic && term.arithmetic;
-            unit = { arithmetic: arithmetic, ops: [], terms: [unit, term] };
+            var algebraic = unit.algebraic && term.algebraic;
+            unit = { algebraic: algebraic, ops: [], terms: [unit, term] };
         }
     }
     else
@@ -68,7 +68,7 @@ function appendTerm(parseInfo, term)
         var finalizer = popFinalizer(parseInfo);
         return finalizer(unit, parseInfo);
     }
-    if (binSign === '-' && !unit.arithmetic)
+    if (binSign === '-' && !unit.algebraic)
         applyMod(unit, '+');
     mod = readMod(parseInfo, binSign === '+' ? '' : binSign);
     pushMod(parseInfo, mod);
@@ -78,7 +78,7 @@ function appendTerm(parseInfo, term)
 
 function applyMod(unit, mod)
 {
-    if (!unit.mod && 'value' in unit && unit.arithmetic && !unit.pmod)
+    if (!unit.mod && 'value' in unit && unit.algebraic && !unit.pmod)
     {
         var value = unit.value;
         loop:
@@ -107,7 +107,7 @@ function applyMod(unit, mod)
     {
         mod = joinMods(mod, unit.mod || '', unit.pmod);
         unit.mod = mod;
-        unit.arithmetic = true;
+        unit.algebraic = true;
     }
 }
 
@@ -296,7 +296,7 @@ function parseNextOp(parseInfo)
                 return;
             unit = { terms: [unit] };
         }
-        unit.arithmetic = false;
+        unit.algebraic = false;
     }
     unit.ops = ops = (unit.ops || []).concat(ops);
     if (ops.length && !unit.mod && !unit.pmod)
@@ -307,7 +307,7 @@ function parseNextOp(parseInfo)
             if (pmod)
             {
                 unit.pmod = pmod;
-                unit.arithmetic = true;
+                unit.algebraic = true;
             }
         }
     }
@@ -328,7 +328,7 @@ function parsePrimaryExpr(parseInfo)
     if (constValueExpr)
     {
         var constValue = evalExpr(constValueExpr);
-        newOps(parseInfo, { arithmetic: true, value: constValue });
+        newOps(parseInfo, { algebraic: true, value: constValue });
         return parseNextOp;
     }
     if (readSquareBracketLeft(parseInfo))

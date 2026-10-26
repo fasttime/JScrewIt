@@ -1145,7 +1145,7 @@ var charCommonDefinition = defineCharByFunction('charCommon');
         ],
         CONCAT:
         [
-            define({ expr: '"concat"', solutionType: SolutionType.COMBINED_STRING }),
+            define('"concat"'),
         ],
         FILTER:     '[].filter',
         FLAT:
@@ -1158,21 +1158,21 @@ var charCommonDefinition = defineCharByFunction('charCommon');
         ],
         JOIN:
         [
-            define({ expr: '"join"', solutionType: SolutionType.COMBINED_STRING }),
+            define('"join"'),
         ],
         LOCALE_AR:
         [
-            define({ expr: '"ar-td"', solutionType: SolutionType.COMBINED_STRING }),
-            define({ expr: '"ar"', solutionType: SolutionType.COMBINED_STRING }, SHORT_LOCALES),
+            define('"ar-td"'),
+            define('"ar"', SHORT_LOCALES),
         ],
         LOCALE_HE:
         [
-            define({ expr: '"He"', solutionType: SolutionType.COMBINED_STRING }),
-            define({ expr: '"he"', solutionType: SolutionType.COMBINED_STRING }),
+            define('"He"'),
+            define('"he"'),
         ],
         MAP:
         [
-            define({ expr: '"map"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"map"', optimize: true }),
         ],
         PLAIN_OBJECT:
         [
@@ -1180,39 +1180,25 @@ var charCommonDefinition = defineCharByFunction('charCommon');
         ],
         SLICE_OR_FLAT:
         [
-            define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
-            define({ expr: '"flat"', solutionType: SolutionType.COMBINED_STRING }, FLAT),
+            define('"slice"'),
+            define('"flat"', FLAT),
         ],
         SLICE_OR_SUBSTR:
         [
-            define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
-            define({ expr: '"substr"', solutionType: SolutionType.COMBINED_STRING }),
+            define('"slice"'),
+            define('"substr"'),
         ],
         SPLIT:
         [
-            define({ expr: '"split"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"split"', optimize: true }),
         ],
         TO_LOCALE_STRING:
         [
-            define
-            (
-                {
-                    expr:           '"toLocaleString"',
-                    optimize:       true,
-                    solutionType:   SolutionType.COMBINED_STRING,
-                }
-            ),
+            define({ expr: '"toLocaleString"', optimize: true }),
         ],
         TO_STRING:
         [
-            define
-            (
-                {
-                    expr:           '"toString"',
-                    optimize:       { default: false, shortcutOpt: true },
-                    solutionType:   SolutionType.COMBINED_STRING,
-                }
-            ),
+            define({ expr: '"toString"', optimize: { default: false, shortcutOpt: true } }),
         ],
 
         // Function body extra padding blocks: prepended to a function to align the function's body
@@ -1256,55 +1242,15 @@ var charCommonDefinition = defineCharByFunction('charCommon');
         ],
         FBP_7_WA:
         [
-            define
-            (
-                {
-                    expr:           '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                }
-            ),
-            define
-            (
-                {
-                    expr:           '+("10" + [(RP_0_S + AT)[32]] + "00000")',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                },
-                AT
-            ),
-            define
-            (
-                {
-                    expr:           '+("10" + [(RP_6_S + FLAT)[40]] + "00000")',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                },
-                FLAT
-            ),
+            define('+("10" + [(RP_4_A + FILTER)[40]] + "00000")'),
+            define('+("10" + [(RP_0_S + AT)[32]] + "00000")', AT),
+            define('+("10" + [(RP_6_S + FLAT)[40]] + "00000")', FLAT),
         ],
         FBP_8_WA:
         [
-            define
-            (
-                {
-                    expr:           '+("1000" + (RP_5_A + FILTER + 0)[40] + "000")',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                }
-            ),
-            define
-            (
-                {
-                    expr:           '+("1000" + (AT + 0)[31] + "000")',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                },
-                AT
-            ),
-            define
-            (
-                {
-                    expr:           '+("1000" + (FLAT + 0)[33] + "000")',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                },
-                FLAT
-            ),
+            define('+("1000" + (RP_5_A + FILTER + 0)[40] + "000")'),
+            define('+("1000" + (AT + 0)[31] + "000")', AT),
+            define('+("1000" + (FLAT + 0)[33] + "000")', FLAT),
         ],
         FBP_9_U:
         [
@@ -1344,21 +1290,8 @@ var charCommonDefinition = defineCharByFunction('charCommon');
 
         FHP_3_WA:
         [
-            define
-            (
-                {
-                    expr:           '+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                }
-            ),
-            define
-            (
-                {
-                    expr:           '+(++(RP_0_S + ANY_FUNCTION)[0] + [0])',
-                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
-                },
-                INCR_CHAR
-            ),
+            define('+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])'),
+            define('+(++(RP_0_S + ANY_FUNCTION)[0] + [0])', INCR_CHAR),
         ],
         FHP_5_A:
         [
@@ -1366,7 +1299,7 @@ var charCommonDefinition = defineCharByFunction('charCommon');
         ],
         FHP_8_S:
         [
-            define({ expr: '[RP_3_WA] + FHP_5_A', solutionType: SolutionType.COMBINED_STRING }),
+            define('[RP_3_WA] + FHP_5_A'),
         ],
 
         // Conditional padding blocks.
@@ -1374,18 +1307,8 @@ var charCommonDefinition = defineCharByFunction('charCommon');
         // true if feature IE_SRC is available; false otherwise.
         IS_IE_SRC_A:
         [
-            define
-            (
-                {
-                    expr:           '!![[]][+(RP_0_S + ANY_FUNCTION)[0]]',
-                    solutionType:   SolutionType.ALGEBRAIC,
-                }
-            ),
-            define
-            (
-                { expr: '!!++(RP_0_S + ANY_FUNCTION)[0]', solutionType: SolutionType.ALGEBRAIC },
-                INCR_CHAR
-            ),
+            define('!![[]][+(RP_0_S + ANY_FUNCTION)[0]]'),
+            define('!!++(RP_0_S + ANY_FUNCTION)[0]', INCR_CHAR),
         ],
 
         // Regular padding blocks.
@@ -1401,11 +1324,11 @@ var charCommonDefinition = defineCharByFunction('charCommon');
 
         RP_0_S:     { expr: '[]',       solutionType: SolutionType.OBJECT },
         RP_1_WA:    { expr: '0',        solutionType: SolutionType.WEAK_ALGEBRAIC },
-        RP_2_WS:    { expr: '"00"',     solutionType: SolutionType.WEAK_PREFIXED_STRING },
+        RP_2_WS:    '"00"',
         RP_3_WA:    { expr: 'NaN',      solutionType: SolutionType.WEAK_ALGEBRAIC },
         RP_4_A:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
         RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
-        RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
+        RP_6_S:     '"0false"',
     };
 
     FORMAT_MAPPER_DBL_DICT =

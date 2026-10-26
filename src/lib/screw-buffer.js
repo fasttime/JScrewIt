@@ -1,6 +1,8 @@
-import createClusteringPlan                                             from './clustering-plan';
-import { assignNoEnum }                                                 from './obj-utils';
-import { DynamicSolution, EMPTY_SOLUTION, WEAK_APPEND_EXTRA_LENGTH }    from './solution';
+import createClusteringPlan from './clustering-plan';
+import { assignNoEnum }     from './obj-utils';
+import
+{ DynamicSolution, EMPTY_SOLUTION, SimpleSolution, SolutionType, WEAK_APPEND_EXTRA_LENGTH }
+from './solution';
 
 var MAX_APPEND_EXTRA_LENGTH = WEAK_APPEND_EXTRA_LENGTH;
 
@@ -26,10 +28,13 @@ function gatherGroup(solutions, bond, forceString)
         solution.append(EMPTY_SOLUTION);
     if (!solution.isString && forceString)
         solution.append(EMPTY_SOLUTION);
-    var str = solution.replacement;
     if (bond && solution.isLoose)
-        str = '(' + str + ')';
-    return str;
+    {
+        // A bonded group is always a string, and grouping turns a loose string into a plain one.
+        var replacement = '(' + solution.replacement + ')';
+        solution = new SimpleSolution(solution.source, replacement, SolutionType.STRING);
+    }
+    return solution;
 }
 
 export function ScrewBuffer(screwMode, optimizerList)
@@ -65,7 +70,7 @@ assignNoEnum
             );
             this._length += appendLength;
         },
-        toString:
+        toSolution:
         function ()
         {
             var screwMode = this._screwMode;
@@ -75,7 +80,13 @@ assignNoEnum
             var optimizerList = this._optimizerList;
             if (optimizerList.length)
                 optimizeSolutions(optimizerList, groupSolutions, bond, forceString);
-            var str = gatherGroup(groupSolutions, bond, forceString);
+            var solution = gatherGroup(groupSolutions, bond, forceString);
+            return solution;
+        },
+        toString:
+        function ()
+        {
+            var str = this.toSolution().replacement;
             return str;
         },
     }

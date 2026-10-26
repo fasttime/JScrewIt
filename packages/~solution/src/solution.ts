@@ -134,6 +134,12 @@ export class SimpleSolution extends AbstractSolution
     {
         super();
     }
+
+    public static from({ source, replacement, type }: Solution): SimpleSolution
+    {
+        const solution = new SimpleSolution(source, replacement, type);
+        return solution;
+    }
 }
 
 export const EMPTY_SOLUTION: Solution = new SimpleSolution('', '[]', SolutionType.OBJECT);

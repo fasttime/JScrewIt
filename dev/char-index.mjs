@@ -386,7 +386,7 @@ function hasUnusedDefinitions({ solutions }, char)
     let customEntryCount = 0;
     let commonEntryFound = false;
     const entries = getCharacterEntries(char);
-    if (entries)
+    if (Array.isArray(entries))
     {
         for (const entry of entries)
         {
@@ -396,6 +396,8 @@ function hasUnusedDefinitions({ solutions }, char)
                 customEntryCount++;
         }
     }
+    else if (entries)
+        customEntryCount = 1;
     const entryIndexSet = new Set();
     let commonSolutionFound = false;
     for (const { entryCode } of solutions)

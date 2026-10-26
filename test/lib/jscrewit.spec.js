@@ -1163,151 +1163,224 @@ self,
     );
     describe
     (
-        'Encoder#resolve throws a SyntaxError for',
+        'Encoder#resolve',
         function ()
         {
-            var encoder = JScrewIt.debug.createEncoder();
-            encoder.replaceString = Function();
-
-            function debugReplacer(input)
-            {
-                var result =
-                function ()
-                {
-                    encoder.resolve(input);
-                };
-                return result;
-            }
-
-            JScrewIt.debug.defineConstant(encoder, 'A', 'FLAT');
-            JScrewIt.debug.defineConstant(encoder, 'B', 'C');
-            JScrewIt.debug.defineConstant(encoder, 'C', 'B');
-            JScrewIt.debug.defineConstant(encoder, 'D', '?');
-            JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
-            JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
-            JScrewIt.debug.defineConstant(encoder, 'G', '');
-            JScrewIt.debug.defineConstant(encoder, 'H', '0 + ""');
-
             it
             (
-                'empty definition',
+                'infers the type of a string definition',
                 function ()
                 {
-                    expect(debugReplacer('G')).toThrowStrictly
-                    (SyntaxError, 'Syntax error in the definition of G');
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution =
+                    encoder.resolve('"ab"', undefined, JScrewIt.debug.SolutionType.OBJECT);
+                    expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
+                    expect(solution.replacement).toBe(encoder.replaceString('ab'));
+                    expect(solution.type).toBe(JScrewIt.debug.SolutionType.COMBINED_STRING);
                 }
             );
             it
             (
-                'circular reference',
+                'infers the type of an optimized string definition',
                 function ()
                 {
-                    expect(debugReplacer('B')).toThrowStrictly
-                    (SyntaxError, 'Circular reference detected: B < C < B – [Feature <>]');
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution = encoder.resolve({ expr: '"zz"', optimize: true });
+                    expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
+                    expect(solution.replacement).toBe(encoder.replaceExpr('1295..toString("36")'));
+                    expect(solution.type).toBe(JScrewIt.debug.SolutionType.STRING);
+                }
+            );
+            it
+            (
+                'infers the type of a post-incremented definition',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution = encoder.resolve('[][0]++');
+                    expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
+                    expect(solution.replacement).toBe(encoder.replaceExpr('[][0]++'));
+                    expect(solution.type).toBe(JScrewIt.debug.SolutionType.ALGEBRAIC);
+                }
+            );
+            it
+            (
+                'infers the type of a prefixed post-incremented definition',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution = encoder.resolve('+[][0]++');
+                    expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
+                    expect(solution.replacement).toBe(encoder.replaceExpr('+[][0]++'));
+                    expect(solution.type).toBe(JScrewIt.debug.SolutionType.WEAK_ALGEBRAIC);
+                }
+            );
+            it
+            (
+                'turns on all optimizations when the optimize option is an object without a ' +
+                'default property',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution = encoder.resolve({ expr: '"zz"', optimize: { } });
+                    expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
+                    expect(solution.replacement).toBe(encoder.replaceExpr('1295..toString("36")'));
+                    expect(solution.type).toBe(JScrewIt.debug.SolutionType.STRING);
                 }
             );
             describe
             (
-                'undefined identifier',
+                'throws a SyntaxError for',
                 function ()
                 {
-                    it
-                    (
-                        'in a definition',
+                    function debugReplacer(input)
+                    {
+                        var result =
                         function ()
                         {
-                            expect(debugReplacer('A')).toThrowStrictly
-                            (SyntaxError, 'Undefined identifier FLAT in the definition of A');
+                            encoder.resolve(input);
+                        };
+                        return result;
+                    }
+
+                    var encoder = JScrewIt.debug.createEncoder();
+                    encoder.replaceString = Function();
+
+                    JScrewIt.debug.defineConstant(encoder, 'A', 'FLAT');
+                    JScrewIt.debug.defineConstant(encoder, 'B', 'C');
+                    JScrewIt.debug.defineConstant(encoder, 'C', 'B');
+                    JScrewIt.debug.defineConstant(encoder, 'D', '?');
+                    JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
+                    JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
+                    JScrewIt.debug.defineConstant(encoder, 'G', '');
+                    JScrewIt.debug.defineConstant(encoder, 'H', '0 + ""');
+
+                    it
+                    (
+                        'empty definition',
+                        function ()
+                        {
+                            expect(debugReplacer('G')).toThrowStrictly
+                            (SyntaxError, 'Syntax error in the definition of G');
                         }
                     );
                     it
                     (
-                        'inline',
+                        'circular reference',
                         function ()
                         {
-                            expect(debugReplacer('valueOf')).toThrowStrictly
-                            (SyntaxError, 'Undefined identifier valueOf');
+                            expect(debugReplacer('B')).toThrowStrictly
+                            (SyntaxError, 'Circular reference detected: B < C < B – [Feature <>]');
                         }
                     );
-                }
-            );
-            describe
-            (
-                'unexpected character',
-                function ()
-                {
-                    it
+                    describe
                     (
-                        'in a definition',
+                        'undefined identifier',
                         function ()
                         {
-                            expect(debugReplacer('D')).toThrowStrictly
-                            (SyntaxError, 'Syntax error in the definition of D');
-                        }
-                    );
-                    it
-                    (
-                        'inline',
-                        function ()
-                        {
-                            expect(debugReplacer('?')).toThrowStrictly(SyntaxError, 'Syntax error');
-                        }
-                    );
-                }
-            );
-            describe
-            (
-                'illegal string',
-                function ()
-                {
-                    it
-                    (
-                        'in a definition',
-                        function ()
-                        {
-                            expect(debugReplacer('E')).toThrowStrictly
-                            (SyntaxError, 'Syntax error in the definition of E');
-                        }
-                    );
-                    it
-                    (
-                        'inline',
-                        function ()
-                        {
-                            expect(debugReplacer('"\\xx"')).toThrowStrictly
-                            (SyntaxError, 'Syntax error');
-                        }
-                    );
-                }
-            );
-            describe
-            (
-                'string to non-string concatenation',
-                function ()
-                {
-                    it
-                    (
-                        'in a definition',
-                        function ()
-                        {
-                            expect(debugReplacer('H')).toThrowStrictly
+                            it
                             (
-                                SyntaxError,
-                                'Unsupported concatenation of a string to a potentially ' +
-                                'non-string expression in the definition of H'
+                                'in a definition',
+                                function ()
+                                {
+                                    expect(debugReplacer('A')).toThrowStrictly
+                                    (
+                                        SyntaxError,
+                                        'Undefined identifier FLAT in the definition of A'
+                                    );
+                                }
+                            );
+                            it
+                            (
+                                'inline',
+                                function ()
+                                {
+                                    expect(debugReplacer('valueOf')).toThrowStrictly
+                                    (SyntaxError, 'Undefined identifier valueOf');
+                                }
                             );
                         }
                     );
-                    it
+                    describe
                     (
-                        'inline',
+                        'unexpected character',
                         function ()
                         {
-                            expect(debugReplacer('0 + ""')).toThrowStrictly
+                            it
                             (
-                                SyntaxError,
-                                'Unsupported concatenation of a string to a potentially ' +
-                                'non-string expression'
+                                'in a definition',
+                                function ()
+                                {
+                                    expect(debugReplacer('D')).toThrowStrictly
+                                    (SyntaxError, 'Syntax error in the definition of D');
+                                }
+                            );
+                            it
+                            (
+                                'inline',
+                                function ()
+                                {
+                                    expect(debugReplacer('?')).toThrowStrictly
+                                    (SyntaxError, 'Syntax error');
+                                }
+                            );
+                        }
+                    );
+                    describe
+                    (
+                        'illegal string',
+                        function ()
+                        {
+                            it
+                            (
+                                'in a definition',
+                                function ()
+                                {
+                                    expect(debugReplacer('E')).toThrowStrictly
+                                    (SyntaxError, 'Syntax error in the definition of E');
+                                }
+                            );
+                            it
+                            (
+                                'inline',
+                                function ()
+                                {
+                                    expect(debugReplacer('"\\xx"')).toThrowStrictly
+                                    (SyntaxError, 'Syntax error');
+                                }
+                            );
+                        }
+                    );
+                    describe
+                    (
+                        'string to non-string concatenation',
+                        function ()
+                        {
+                            it
+                            (
+                                'in a definition',
+                                function ()
+                                {
+                                    expect(debugReplacer('H')).toThrowStrictly
+                                    (
+                                        SyntaxError,
+                                        'Unsupported concatenation of a string to a potentially ' +
+                                        'non-string expression in the definition of H'
+                                    );
+                                }
+                            );
+                            it
+                            (
+                                'inline',
+                                function ()
+                                {
+                                    expect(debugReplacer('0 + ""')).toThrowStrictly
+                                    (
+                                        SyntaxError,
+                                        'Unsupported concatenation of a string to a potentially ' +
+                                        'non-string expression'
+                                    );
+                                }
                             );
                         }
                     );
@@ -1403,6 +1476,17 @@ self,
         'Encoder#resolveConstant',
         function ()
         {
+            it
+            (
+                'does not set a source for a non-string constant',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    JScrewIt.debug.defineConstant(encoder, 'FOO', '0');
+                    var solution = encoder.resolveConstant('FOO');
+                    expect(solution.source).toBeUndefined();
+                }
+            );
             it
             (
                 'throws an error for an undefined constant',

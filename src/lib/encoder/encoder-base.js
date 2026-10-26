@@ -155,6 +155,14 @@ function isStringUnit(unit)
     return strUnit;
 }
 
+function parseExpr(encoder, expr)
+{
+    var unit = expressParseCached(expr);
+    if (!unit || unit === true)
+        throwSyntaxError(encoder, 'Syntax error');
+    return unit;
+}
+
 function replaceIdentifier(encoder, identifier, bondStrength)
 {
     var solution;
@@ -170,6 +178,13 @@ function replaceIdentifier(encoder, identifier, bondStrength)
     var replacement = solution.replacement;
     if (groupingRequired)
         replacement = '(' + replacement + ')';
+    return replacement;
+}
+
+function replaceParsedExpr(encoder, unit, optimize)
+{
+    var replacers = getReplacers(optimize);
+    var replacement = encoder._replaceExpressUnit(unit, false, [], NaN, replacers);
     return replacement;
 }
 
@@ -358,38 +373,12 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
  */
 function replaceString(str, options)
 {
-    options = options || { };
-    var optimizerList = this._getOptimizerList(str, options.optimize);
-    var screwMode = options.screwMode || SCREW_NORMAL;
-    var buffer = new ScrewBuffer(screwMode, optimizerList);
-    var firstSolution = options.firstSolution;
-    var maxLength = options.maxLength;
-    if (firstSolution)
-        buffer.append(firstSolution);
-    if (buffer.length > maxLength)
-        return;
-    var length = str.length;
-    for (var index = 0; index < length;)
+    var solution = resolveString(this, str, options);
+    if (solution)
     {
-        var solution;
-        var simple = matchSimpleAt(str, index);
-        if (simple)
-        {
-            index += simple.length;
-            solution = SIMPLE[simple];
-        }
-        else
-        {
-            var char = str[index++];
-            solution = this.resolveCharacter(char);
-        }
-        buffer.append(solution);
-        if (buffer.length > maxLength)
-            return;
-    }
-    var replacement = _String(buffer);
-    if (!(replacement.length > maxLength))
+        var replacement = solution.replacement;
         return replacement;
+    }
 }
 
 function resolveCharByCommonMethod(char)
@@ -536,11 +525,12 @@ function resolveConstant(constant)
                 if (_Array_isArray(entries))
                 {
                     this._guardResolution(constant);
-                    solution = findOptimalSolution(this, constant, entries, SolutionType.OBJECT);
+                    solution = findOptimalSolution(this, undefined, entries, SolutionType.OBJECT);
                 }
                 else
                 {
                     solution = STATIC_ENCODER.resolve(entries, undefined, SolutionType.OBJECT);
+                    solution.entryCode = 'static';
                     constCache = STATIC_CONST_CACHE;
                 }
                 constCache[constant] = solution;
@@ -596,6 +586,61 @@ function resolveShortcut(shortcut)
         );
     }
     return solution;
+}
+
+/**
+ * Replaces a given string with equivalent JSFuck code, like {@link Encoder#replaceString}, but
+ * returns a solution rather than a replacement string.
+ *
+ * The type of the returned solution reflects the actual structure of the replacement, including
+ * the effects of any clusters applied by the optimizers.
+ *
+ * @param {Encoder} encoder
+ * The encoder to use.
+ *
+ * @param {string} str
+ * The string to replace.
+ *
+ * @param {object} [options = { }]
+ * The same options accepted by {@link Encoder#replaceString}.
+ *
+ * @returns {AbstractSolution | undefined}
+ * The solution or `undefined`.
+ */
+function resolveString(encoder, str, options)
+{
+    options = options || { };
+    var optimizerList = encoder._getOptimizerList(str, options.optimize);
+    var screwMode = options.screwMode || SCREW_NORMAL;
+    var buffer = new ScrewBuffer(screwMode, optimizerList);
+    var firstSolution = options.firstSolution;
+    var maxLength = options.maxLength;
+    if (firstSolution)
+        buffer.append(firstSolution);
+    if (buffer.length > maxLength)
+        return;
+    var length = str.length;
+    for (var index = 0; index < length;)
+    {
+        var solution;
+        var simple = matchSimpleAt(str, index);
+        if (simple)
+        {
+            index += simple.length;
+            solution = SIMPLE[simple];
+        }
+        else
+        {
+            var char = str[index++];
+            solution = encoder.resolveCharacter(char);
+        }
+        buffer.append(solution);
+        if (buffer.length > maxLength)
+            return;
+    }
+    var groupSolution = buffer.toSolution();
+    if (!(groupSolution.length > maxLength))
+        return groupSolution;
 }
 
 function throwSyntaxError(encoder, message)
@@ -772,11 +817,8 @@ assignNoEnum
         replaceExpr:
         function (expr, optimize)
         {
-            var unit = expressParseCached(expr);
-            if (!unit || unit === true)
-                throwSyntaxError(this, 'Syntax error');
-            var replacers = getReplacers(optimize);
-            var replacement = this._replaceExpressUnit(unit, false, [], NaN, replacers);
+            var unit = parseExpr(this, expr);
+            var replacement = replaceParsedExpr(this, unit, optimize);
             return replacement;
         },
 
@@ -806,13 +848,38 @@ assignNoEnum
                 }
                 else
                     expr = definition;
-                var replacement = this.replaceExpr(expr, optimize);
-                if (solutionType == null)
+                var unit = parseExpr(this, expr);
+                if (isStringUnit(unit))
                 {
-                    solutionType =
-                    defaultSolutionType != null ? defaultSolutionType : SolutionType.STRING;
+                    var options = { optimize: optimize, screwMode: SCREW_AS_STRING };
+                    solution = resolveString(this, unit.value, options);
+                    solution = SimpleSolution.from(solution);
                 }
-                solution = new SimpleSolution(source, replacement, solutionType);
+                else
+                {
+                    var mod = unit.mod;
+                    if (/^[#+-]/.test(mod))
+                        solutionType = SolutionType.WEAK_ALGEBRAIC;
+                    else if (mod || unit.pmod)
+                        solutionType = SolutionType.ALGEBRAIC;
+                    else if (!unit.ops.length)
+                    {
+                        var terms = unit.terms;
+                        if (terms)
+                        {
+                            var term0 = terms[0];
+                            if (!term0.mod && !term0.ops.length && _Array_isArray(term0.value))
+                                solutionType = SolutionType.COMBINED_STRING;
+                        }
+                    }
+                    var replacement = replaceParsedExpr(this, unit, optimize);
+                    if (solutionType == null)
+                    {
+                        solutionType =
+                        defaultSolutionType != null ? defaultSolutionType : SolutionType.STRING;
+                    }
+                    solution = new SimpleSolution(source, replacement, solutionType);
+                }
             }
             return solution;
         },

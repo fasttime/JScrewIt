@@ -302,6 +302,66 @@
             );
             describe
             (
+                '#toSolution',
+                function ()
+                {
+                    it
+                    (
+                        'returns a weak algebraic solution in normal mode',
+                        function ()
+                        {
+                            var buffer = createScrewBuffer(SCREW_NORMAL, []);
+                            buffer.append(solution0);
+                            var solution = buffer.toSolution();
+                            expect(solution.source).toBe('0');
+                            expect(solution.replacement).toBe('+[]');
+                            expect(solution.type).toBe(SolutionType.WEAK_ALGEBRAIC);
+                        }
+                    );
+                    it
+                    (
+                        'returns a combined string solution for concatenated strings',
+                        function ()
+                        {
+                            var buffer = createScrewBuffer(SCREW_AS_STRING, []);
+                            buffer.append(solutionA);
+                            buffer.append(solutionA);
+                            var solution = buffer.toSolution();
+                            expect(solution.source).toBe('aa');
+                            expect(solution.replacement).toBe('(![]+[])[+!![]]+(![]+[])[+!![]]');
+                            expect(solution.type).toBe(SolutionType.COMBINED_STRING);
+                        }
+                    );
+                    it
+                    (
+                        'returns a string solution for a cluster spanning the whole group',
+                        function ()
+                        {
+                            var buffer = createScrewBuffer(SCREW_AS_STRING, [strTestOptimizer]);
+                            buffer.append(solutionA);
+                            buffer.append(solutionA);
+                            var solution = buffer.toSolution();
+                            expect(solution.replacement).toBe('""');
+                            expect(solution.type).toBe(SolutionType.STRING);
+                        }
+                    );
+                    it
+                    (
+                        'returns a string solution for a grouped loose string in bonded mode',
+                        function ()
+                        {
+                            var buffer = createScrewBuffer(SCREW_AS_BONDED_STRING, []);
+                            buffer.append(solution0False);
+                            var solution = buffer.toSolution();
+                            expect(solution.source).toBe('0false');
+                            expect(solution.replacement).toBe('([+[]]+![])');
+                            expect(solution.type).toBe(SolutionType.STRING);
+                        }
+                    );
+                }
+            );
+            describe
+            (
                 '#toString',
                 function ()
                 {

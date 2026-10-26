@@ -1,7 +1,7 @@
 /* global DEBUG */
 
-import createClusteringPlan                                         from '../clustering-plan';
-import { define }                                                   from '../definers';
+import createClusteringPlan                             from '../clustering-plan';
+import { define }                                       from '../definers';
 import
 {
     BASE64_ALPHABET_HI_4,
@@ -17,12 +17,12 @@ import
     SHORTCUTS,
 }
 from '../definitions';
-import Encoder                                                      from '../encoder/encoder-base';
+import Encoder                                          from '../encoder/encoder-base';
 import { STRATEGIES, createIndexOfMapper, createParseIntMapper, createReindexMap }
 from '../encoder/encoder-ext';
-import { Feature }                                                  from '../features';
-import createFigurator                                              from '../figurator';
-import { JScrewIt, isEncoderInCache }                               from './jscrewit-base';
+import { Feature }                                      from '../features';
+import createFigurator                                  from '../figurator';
+import { JScrewIt, isEncoderInCache }                   from './jscrewit-base';
 import
 {
     _Array_isArray,
@@ -41,8 +41,8 @@ import
 from '../screw-buffer';
 import { DynamicSolution, SimpleSolution, SolutionType, calculateSolutionType }
 from '../solution';
-import trimJS                                                       from '../trim-js';
-import { MASK_EMPTY, MaskMap, MaskSet, maskIncludes, maskUnion }    from '~feature-hub';
+import trimJS                                           from '../trim-js';
+import { MaskMap, MaskSet, maskIncludes, maskUnion }    from '~feature-hub';
 
 if (typeof NO_DEBUG === 'undefined')
 {
@@ -75,7 +75,7 @@ if (typeof NO_DEBUG === 'undefined')
                 if (_Array_isArray(inputEntries))
                     outputEntries = inputEntries.map(cloneEntry);
                 else
-                    outputEntries = [createEntryClone(inputEntries, MASK_EMPTY)];
+                    outputEntries = clone(inputEntries);
             }
             return outputEntries;
         }
