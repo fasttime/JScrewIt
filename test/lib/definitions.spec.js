@@ -26,7 +26,7 @@ self,
     function decodeEntryWithFeature(entry, source, defaultSolutionType, featureObj)
     {
         var encoder = getPoolEncoder(featureObj);
-        var solution = encoder.resolve(entry.definition, source, defaultSolutionType);
+        var solution = encoder._resolve(entry.definition, source, defaultSolutionType);
         return solution;
     }
 
@@ -394,7 +394,7 @@ self,
             function ()
             {
                 var encoder = getPoolEncoder(featureObj);
-                var solution = encoder.resolve(entry.definition, shortcut);
+                var solution = encoder._resolve(entry.definition, shortcut);
                 verifyStringSolution(solution, shortcut, this.test.emuFeatureNames);
             }
         );

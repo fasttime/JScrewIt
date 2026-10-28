@@ -147,7 +147,7 @@ function createCharKeyArrayString
         }
     );
     var charKeyArrayStr =
-    encoder.replaceStringArray
+    encoder._replaceStringArray
     (charKeyArray, insertions, substitutions, !areKeysFigures, areKeysFigures, maxLength);
     return charKeyArrayStr;
 }
@@ -293,7 +293,7 @@ function createStrCodesEncoding(encoder, inputData, fromCharCode, splitter, radi
     var cache = inputData[strCodeCacheKey] || (inputData[strCodeCacheKey] = createEmpty());
     var strCodeArray = splitter(input, radix, cache);
     var strCodeArrayStr =
-    encoder.replaceStringArray(strCodeArray, FALSE_FREE_DELIMITERS, null, false, false, maxLength);
+    encoder._replaceStringArray(strCodeArray, FALSE_FREE_DELIMITERS, null, false, false, maxLength);
     if (strCodeArrayStr)
     {
         var replacement;
@@ -418,7 +418,7 @@ function encodeByDblDict
     var figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
     var figureMaxLength = maxLength - legend.length;
     var figureLegend =
-    encoder.replaceStringArray
+    encoder._replaceStringArray
     (
         figures,
         figureLegendInsertions,
@@ -576,7 +576,7 @@ function initMinFalseFreeCharIndexArrayStrLength(input)
  */
 function replaceMapper(mapper)
 {
-    var mapperReplacement = this.replaceExpr(mapper, true);
+    var mapperReplacement = this._replaceExpr(mapper, true);
     return mapperReplacement;
 }
 
@@ -638,7 +638,7 @@ wrapWithCall.forceString = false;
 
 export function wrapWithEval(str)
 {
-    var output = this.replaceExpr('Function("return eval")()') + '(' + str + ')';
+    var output = this._replaceExpr('Function("return eval")()') + '(' + str + ')';
     return output;
 }
 
@@ -1408,11 +1408,11 @@ assignNoEnum
             return replacement;
         },
 
-        _maxDecodableArgs:  65533, // Limit imposed by Internet Explorer.
+        _maxDecodableArgs:      65533, // Limit imposed by Internet Explorer.
 
-        replaceMapper:      replaceMapper,
+        _replaceStringArray:    replaceStringArray,
 
-        replaceStringArray: replaceStringArray,
+        replaceMapper:          replaceMapper,
     }
 );
 

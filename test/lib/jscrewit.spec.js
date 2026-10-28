@@ -333,9 +333,9 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var input = 'aabbcc';
-                    var replaceStringArray = encoder.replaceStringArray;
+                    var replaceStringArray = encoder._replaceStringArray;
                     var replaceStringArrayCalled;
-                    encoder.replaceStringArray =
+                    encoder._replaceStringArray =
                     function (array)
                     {
                         if (array.length === input.length)
@@ -714,7 +714,7 @@ self,
                     var encoder = JScrewIt.debug.createEncoder();
                     var actual = encoder._encodeExpress('"xx".ww');
                     var expected =
-                    encoder.replaceExpr('(1221..toString("36"))[1120..toString("34")]');
+                    encoder._replaceExpr('(1221..toString("36"))[1120..toString("34")]');
                     expect(actual).toBe(expected);
                 }
             );
@@ -783,7 +783,7 @@ self,
     );
     describe
     (
-        'Encoder#replaceExpr',
+        'Encoder#_replaceExpr',
         function ()
         {
             it.when(typeof module !== 'undefined' && global.WeakRef)
@@ -797,7 +797,7 @@ self,
                     {
                         var newJScrewIt = reloadJScrewIt();
                         var encoder = newJScrewIt.debug.createEncoder();
-                        var replacement = encoder.replaceExpr('true');
+                        var replacement = encoder._replaceExpr('true');
                         expect(replacement).toBe('!![]');
                     }
                     finally
@@ -833,7 +833,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var actual = encoder.replaceString('zz', { optimize: true });
-                    var expected = encoder.replaceExpr('1295..toString("36")');
+                    var expected = encoder._replaceExpr('1295..toString("36")');
                     expect(actual).toBe(expected);
                 }
             );
@@ -844,7 +844,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.FROM_CODE_POINT);
                     var actual = encoder.replaceString('😊', { optimize: true });
-                    var expected = encoder.replaceExpr('Function("return\\"\\\\u{1f60a}\\"")()');
+                    var expected = encoder._replaceExpr('Function("return\\"\\\\u{1f60a}\\"")()');
                     expect(actual).toBe(expected);
                 }
             );
@@ -855,7 +855,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var actual = encoder.replaceString('SQRT', { optimize: true });
-                    var expected = encoder.replaceExpr('btoa("I\\x04S")');
+                    var expected = encoder._replaceExpr('btoa("I\\x04S")');
                     expect(actual).toBe(expected);
                 }
             );
@@ -912,7 +912,7 @@ self,
     );
     describe
     (
-        'Encoder#replaceStringArray',
+        'Encoder#_replaceStringArray',
         function ()
         {
             it
@@ -922,7 +922,7 @@ self,
                 {
                     var array = ['undefined', 'undefined'];
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray(array, []);
+                    var output = encoder._replaceStringArray(array, []);
                     expect(evalJSFuck(output)).toEqual(array);
                 }
             );
@@ -932,7 +932,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray(['', ''], [], null, false, false);
+                    var output = encoder._replaceStringArray(['', ''], [], null, false, false);
                     expect(evalJSFuck(output)).toEqual([[], []]);
                 }
             );
@@ -942,7 +942,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray([''], [], null, false, true);
+                    var output = encoder._replaceStringArray([''], [], null, false, true);
                     expect(output).toBe('[[]+[]]');
                 }
             );
@@ -952,7 +952,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray(['', '', ''], [], null, true, false);
+                    var output = encoder._replaceStringArray(['', '', ''], [], null, true, false);
                     expect(evalJSFuck(output)).toEqual([[], 0, 0]);
                 }
             );
@@ -969,7 +969,7 @@ self,
                     ];
                     var encoder = JScrewIt.debug.createEncoder();
                     var output =
-                    encoder.replaceStringArray(array, [{ joiner: '', separator: '[]' }]);
+                    encoder._replaceStringArray(array, [{ joiner: '', separator: '[]' }]);
                     expect(evalJSFuck(output)).toEqual(array);
                 }
             );
@@ -981,7 +981,7 @@ self,
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.getConcatReplacement = Function();
                     var output =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['102', '30', '04', '0', 'true'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1002,7 +1002,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var replacement =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['1', '2', '3', '4', '5'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1012,7 +1012,7 @@ self,
                     );
                     expect(evalJSFuck(replacement)).toEqual(['0', '2', '3', '4', '5']);
                     var replacement0 =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['1', '2', '3', '4', '5'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1023,7 +1023,7 @@ self,
                     );
                     expect(replacement0).toBeUndefined();
                     var replacement1 =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['1', '2', '3', '4', '5'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1043,7 +1043,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var replacement =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['1', '2'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1053,7 +1053,7 @@ self,
                     );
                     expect(evalJSFuck(replacement)).toEqual([1, 2]);
                     var replacement0 =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['1', '2'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1064,7 +1064,7 @@ self,
                     );
                     expect(replacement0).toBeUndefined();
                     var replacement1 =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['1', '2'],
                         [{ separator: 'false', joiner: 'false' }],
@@ -1082,7 +1082,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['UNREPLACEABLE'],
                         [{ separator: 'UNDEFINED', joiner: 'UNREPLACEABLE' }],
@@ -1100,7 +1100,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['UNREPLACEABLE'],
                         [{ separator: 'UNDEFINED', joiner: 'UNREPLACEABLE' }],
@@ -1119,7 +1119,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var output =
-                    encoder.replaceStringArray
+                    encoder._replaceStringArray
                     (
                         ['UNREPLACEABLE'],
                         [{ separator: 'UNDEFINED', joiner: 'UNREPLACEABLE' }],
@@ -1138,7 +1138,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray([''], [], null, false, false, 0);
+                    var output = encoder._replaceStringArray([''], [], null, false, false, 0);
                     expect(output).toBeUndefined();
                 }
             );
@@ -1152,7 +1152,7 @@ self,
                     (
                         function ()
                         {
-                            encoder.replaceStringArray
+                            encoder._replaceStringArray
                             (['UNREPLACEABLE'], [{ separator: '[]', joiner: '' }], null);
                         }
                     )
@@ -1163,7 +1163,7 @@ self,
     );
     describe
     (
-        'Encoder#resolve',
+        'Encoder#_resolve',
         function ()
         {
             it
@@ -1173,7 +1173,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var solution =
-                    encoder.resolve('"ab"', undefined, JScrewIt.debug.SolutionType.OBJECT);
+                    encoder._resolve('"ab"', undefined, JScrewIt.debug.SolutionType.OBJECT);
                     expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
                     expect(solution.replacement).toBe(encoder.replaceString('ab'));
                     expect(solution.type).toBe(JScrewIt.debug.SolutionType.COMBINED_STRING);
@@ -1185,9 +1185,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var solution = encoder.resolve({ expr: '"zz"', optimize: true });
+                    var solution = encoder._resolve({ expr: '"zz"', optimize: true });
                     expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
-                    expect(solution.replacement).toBe(encoder.replaceExpr('1295..toString("36")'));
+                    expect(solution.replacement).toBe(encoder._replaceExpr('1295..toString("36")'));
                     expect(solution.type).toBe(JScrewIt.debug.SolutionType.STRING);
                 }
             );
@@ -1197,9 +1197,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var solution = encoder.resolve('[][0]++');
+                    var solution = encoder._resolve('[][0]++');
                     expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
-                    expect(solution.replacement).toBe(encoder.replaceExpr('[][0]++'));
+                    expect(solution.replacement).toBe(encoder._replaceExpr('[][0]++'));
                     expect(solution.type).toBe(JScrewIt.debug.SolutionType.ALGEBRAIC);
                 }
             );
@@ -1209,9 +1209,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var solution = encoder.resolve('+[][0]++');
+                    var solution = encoder._resolve('+[][0]++');
                     expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
-                    expect(solution.replacement).toBe(encoder.replaceExpr('+[][0]++'));
+                    expect(solution.replacement).toBe(encoder._replaceExpr('+[][0]++'));
                     expect(solution.type).toBe(JScrewIt.debug.SolutionType.WEAK_ALGEBRAIC);
                 }
             );
@@ -1222,9 +1222,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var solution = encoder.resolve({ expr: '"zz"', optimize: { } });
+                    var solution = encoder._resolve({ expr: '"zz"', optimize: { } });
                     expect(solution).toHavePrototype(JScrewIt.debug.SimpleSolution.prototype);
-                    expect(solution.replacement).toBe(encoder.replaceExpr('1295..toString("36")'));
+                    expect(solution.replacement).toBe(encoder._replaceExpr('1295..toString("36")'));
                     expect(solution.type).toBe(JScrewIt.debug.SolutionType.STRING);
                 }
             );
@@ -1238,7 +1238,7 @@ self,
                         var result =
                         function ()
                         {
-                            encoder.resolve(input);
+                            encoder._resolve(input);
                         };
                         return result;
                     }

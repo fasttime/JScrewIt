@@ -121,7 +121,7 @@ export default function createOptimizer(encoder)
         }
     }
 
-    var headReplacement = encoder.replaceExpr('[][SLICE_OR_FLAT].call');
+    var headReplacement = encoder._replaceExpr('[][SLICE_OR_FLAT].call');
     var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
     return optimizer;
 }

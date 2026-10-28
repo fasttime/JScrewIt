@@ -13,8 +13,8 @@ export default function replaceCharByCharCode(codePoint)
         arg = '' + codePoint;
     else
         arg = '"' + codePoint + '"';
-    var argReplacement = this.replaceExpr(arg);
+    var argReplacement = this._replaceExpr(arg);
     var replacement =
-    this.replaceExpr('String') + '[' + fromCharCodeReplacement + '](' + argReplacement + ')';
+    this._replaceExpr('String') + '[' + fromCharCodeReplacement + '](' + argReplacement + ')';
     return replacement;
 }

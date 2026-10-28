@@ -29,7 +29,7 @@ export default function replaceCharByEscSeq(codePoint)
     var expr = 'Function("return\\"\\\\' + escCode + '\\"")()';
     if (appendIndexer)
         expr += '[0]';
-    var replacement = this.replaceExpr(expr, { default: false, toStringOpt: toStringOpt });
+    var replacement = this._replaceExpr(expr, { default: false, toStringOpt: toStringOpt });
     return replacement;
 }
 

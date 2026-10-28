@@ -5,7 +5,7 @@ export function initStaticEncoder(encoder)
 
 export function replaceStaticExpr(expr)
 {
-    var solution = staticEncoder.replaceExpr(expr);
+    var solution = staticEncoder._replaceExpr(expr);
     return solution;
 }
 

@@ -108,7 +108,7 @@ function findOptimalSolution(encoder, source, entries, defaultSolutionType)
         {
             if (encoder.hasFeatures(entry.mask))
             {
-                var solution = encoder.resolve(entry.definition, source, defaultSolutionType);
+                var solution = encoder._resolve(entry.definition, source, defaultSolutionType);
                 if (!optimalSolution || optimalSolution.length > solution.length)
                 {
                     optimalSolution = solution;
@@ -419,7 +419,7 @@ function resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts)
         shiftedIndex = padding.shiftedIndex;
     }
     var fullExpr = '(' + paddingBlock + ' + ' + expr + ')[' + shiftedIndex + ']';
-    var replacement = this.replaceExpr(fullExpr);
+    var replacement = this._replaceExpr(fullExpr);
     var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
     return solution;
 }
@@ -478,7 +478,7 @@ function resolveCharacter(char)
                 }
                 else
                 {
-                    solution = STATIC_ENCODER.resolve(entries, char);
+                    solution = STATIC_ENCODER._resolve(entries, char);
                     solution.entryCode = 'static';
                     charCache = STATIC_CHAR_CACHE;
                 }
@@ -529,7 +529,7 @@ function resolveConstant(constant)
                 }
                 else
                 {
-                    solution = STATIC_ENCODER.resolve(entries, undefined, SolutionType.OBJECT);
+                    solution = STATIC_ENCODER._resolve(entries, undefined, SolutionType.OBJECT);
                     solution.entryCode = 'static';
                     constCache = STATIC_CONST_CACHE;
                 }
@@ -580,7 +580,7 @@ function resolveShortcut(shortcut)
             {
                 this._guardResolution(shortcutName);
                 if (this.hasFeatures(entry.mask))
-                    solution = this.resolve(entry.definition, shortcut);
+                    solution = this._resolve(entry.definition, shortcut);
                 shortcutCache[shortcut] = solution;
             }
         );
@@ -738,6 +738,14 @@ assignNoEnum
 
         _resolveCharInExpr:         resolveCharInExpr,
 
+        _replaceExpr:
+        function (expr, optimize)
+        {
+            var unit = parseExpr(this, expr);
+            var replacement = replaceParsedExpr(this, unit, optimize);
+            return replacement;
+        },
+
         _replaceExpressUnit:
         function (unit, bond, unitIndices, maxLength, replacers)
         {
@@ -803,28 +811,7 @@ assignNoEnum
             return output;
         },
 
-        constantDefinitions:        CONSTANTS,
-
-        findDefinition:             findDefinition,
-
-        hasFeatures:
-        function (mask)
-        {
-            var included = maskIncludes(this.mask, mask);
-            return included;
-        },
-
-        replaceExpr:
-        function (expr, optimize)
-        {
-            var unit = parseExpr(this, expr);
-            var replacement = replaceParsedExpr(this, unit, optimize);
-            return replacement;
-        },
-
-        replaceString:              replaceString,
-
-        resolve:
+        _resolve:
         function (definition, source, defaultSolutionType)
         {
             var solution;
@@ -883,6 +870,19 @@ assignNoEnum
             }
             return solution;
         },
+
+        constantDefinitions:        CONSTANTS,
+
+        findDefinition:             findDefinition,
+
+        hasFeatures:
+        function (mask)
+        {
+            var included = maskIncludes(this.mask, mask);
+            return included;
+        },
+
+        replaceString:              replaceString,
 
         resolveCharacter:           resolveCharacter,
 

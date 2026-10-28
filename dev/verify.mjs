@@ -197,17 +197,15 @@ function verifyPredef(predefName)
     return verify;
 }
 
-function verifyShortcut(shortcut, entry)
+function verifyShortcut(shortcut)
 {
     let encoder;
     const analyzer = createAnalyzer();
-    const entryMask = entry.mask;
-    const { definition } = entry;
     while (encoder = analyzer.nextEncoder)
     {
-        if (encoder.hasFeatures(entryMask))
+        const shortcutSolution = encoder.resolveShortcut(shortcut);
+        if (shortcutSolution)
         {
-            const shortcutSolution = encoder.resolve(definition, shortcut);
             const options = { optimize: { shortcutOpt: false } };
             const replacement = encoder.replaceString(shortcut, options);
             if (shortcutSolution.length < replacement.length)
@@ -240,19 +238,15 @@ JScrewIt.debug.getShortcutNames().forEach
 (
     shortcut =>
     {
-        if (!verify[shortcut])
+        verify[shortcut] ??=
+        () =>
         {
-            const entry = JScrewIt.debug.getShortcutEntry(shortcut);
-            verify[shortcut] =
-            () =>
-            {
-                const ok = verifyShortcut(shortcut, entry);
-                if (ok)
-                    logOk('Ok.');
-                else
-                    logWarn('Not useful.');
-            };
-        }
+            const ok = verifyShortcut(shortcut);
+            if (ok)
+                logOk('Ok.');
+            else
+                logWarn('Not useful.');
+        };
     },
 );
 

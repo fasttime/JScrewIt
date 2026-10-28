@@ -34,6 +34,8 @@ var SEQUENCE_MIN_LENGTH         = 7;
  *
  * @typedef Delimiter
  *
+ * @ignore
+ *
  * @property {string} separator
  * An express-parsable expression used as an argument for `String.prototype.split` to split a string
  * into an array of strings.
@@ -95,7 +97,7 @@ function createSubstitutionsReplacement(encoder, substitutions, maxLength)
     for (var index = 0; index < substitutionCount; index++)
     {
         var substitution = substitutions[index];
-        var separatorReplacement = undefinedAsString(encoder.replaceExpr(substitution.separator));
+        var separatorReplacement = undefinedAsString(encoder._replaceExpr(substitution.separator));
         var joinerReplacement = undefinedAsString(encoder.replaceString(substitution.joiner));
         maxLength -=
         separatorReplacement.length - SEPARATOR_MIN_LENGTH +
@@ -130,7 +132,9 @@ function replaceJoinedArrayString(array, joiner, maxLength)
 /**
  * Replaces a given array of statically replaceable strings with equivalent JSFuck code.
  *
- * @function Encoder#replaceStringArray
+ * @function Encoder#_replaceStringArray
+ *
+ * @ignore
  *
  * @param {string[]} array
  * The string array to replace.
@@ -212,7 +216,8 @@ export default function replaceStringArray
                 replaceJoinedArrayString(array, insertion.joiner, maxBulkLength);
                 if (!seqReplacement)
                     return;
-                var separatorReplacement = undefinedAsString(this.replaceExpr(insertion.separator));
+                var separatorReplacement =
+                undefinedAsString(this._replaceExpr(insertion.separator));
                 var bulkLength = seqReplacement.length + separatorReplacement.length;
                 if (!(bulkLength > maxBulkLength))
                 {
