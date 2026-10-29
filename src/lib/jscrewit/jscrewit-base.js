@@ -1,6 +1,11 @@
 /* global exports, module, self */
 
-import '../optimizer/optimizer';
+import '../optimizer/atob-optimizer';
+import '../optimizer/btoa-optimizer';
+import '../optimizer/comma-optimizer';
+import '../optimizer/shortcut-optimizer';
+import '../optimizer/surrogate-pair-optimizer';
+import '../optimizer/to-string-optimizer';
 
 import Encoder                                                      from '../encoder/encoder-base';
 import { wrapWithCall, wrapWithEval }                               from '../encoder/encoder-ext';

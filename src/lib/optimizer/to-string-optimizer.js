@@ -8,6 +8,7 @@
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
+import { registerOptimizer }                from '../encoder/optimizer';
 import formatPositiveNumber                 from '../format-positive-number';
 import { _String, _parseInt, createEmpty }  from '../obj-utils';
 import { SimpleSolution, SolutionType }     from '../solution';
@@ -46,7 +47,7 @@ var MAX_SAFE_INTEGER = 0x1fffffffffffff;
 var MIN_SOLUTION_SPAN = 2;
 var RADIX_REPLACEMENTS = [];
 
-export default function createOptimizer(encoder)
+function createOptimizer(encoder)
 {
     if (initialize)
     {
@@ -198,6 +199,12 @@ function makeOptimizer(toStringReplacement)
     return optimizer;
 }
 
+function matches(encoder, str)
+{
+    var returnValue = /[\da-z]{2}/.test(str);
+    return returnValue;
+}
+
 var initialize =
 function ()
 {
@@ -216,10 +223,4 @@ function ()
     }
 };
 
-createOptimizer.key = 'toString';
-createOptimizer.matches =
-function (encoder, str)
-{
-    var returnValue = /[\da-z]{2}/.test(str);
-    return returnValue;
-};
+registerOptimizer('toString', createOptimizer, matches);

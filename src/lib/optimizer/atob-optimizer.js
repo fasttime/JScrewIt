@@ -13,11 +13,12 @@
 //
 // The base64 argument is replaced without optimizations.
 
-import { BASE64_ALPHABET_HI_2_CHARS, BASE64_ALPHABET_HI_4 } from '../definitions';
-import findBase64AlphabetDefinition
-from '../find-base64-alphabet-definition';
-import { _Math_min, createEmpty }                           from '../obj-utils';
-import { SimpleSolution, SolutionType }                     from '../solution';
+import { BASE64_ALPHABET_HI_2_CHARS, BASE64_ALPHABET_HI_4 }
+from '../definitions';
+import { registerOptimizer }            from '../encoder/optimizer';
+import findBase64AlphabetDefinition     from '../find-base64-alphabet-definition';
+import { _Math_min, createEmpty }       from '../obj-utils';
+import { SimpleSolution, SolutionType } from '../solution';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTH = 3; // Length "(" and ")" around the base64 argument plus the leading "+".
@@ -57,7 +58,7 @@ function isClusterable(solution)
     return returnValue;
 }
 
-export default function createOptimizer(encoder)
+function createOptimizer(encoder)
 {
     function appendLengthOf(solution)
     {
@@ -122,10 +123,10 @@ export default function createOptimizer(encoder)
     return optimizer;
 }
 
-createOptimizer.key = 'atob';
-createOptimizer.matches =
-function (encoder, str)
+function matches(encoder, str)
 {
     var returnValue = /[\0-\xff]{2}/.test(str);
     return returnValue;
-};
+}
+
+registerOptimizer('atob', createOptimizer, matches);

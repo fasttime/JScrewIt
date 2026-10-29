@@ -9,6 +9,7 @@
 // cluster is registered rather than in the clusterer, and the solution obtained is reused by the
 // clusterer.
 
+import { registerOptimizer }            from '../encoder/optimizer';
 import { SCREW_AS_STRING }              from '../screw-buffer';
 import { SimpleSolution, SolutionType } from '../solution';
 
@@ -61,7 +62,7 @@ function createClusterer(solution)
     return clusterer;
 }
 
-export default function createOptimizer(encoder)
+function createOptimizer(encoder)
 {
     function createClusterSolution(solutions, start, commaCount)
     {
@@ -139,10 +140,10 @@ function isSingleCharacterSolution(solution)
     return returnValue;
 }
 
-createOptimizer.key = 'comma';
-createOptimizer.matches =
-function (encoder, str)
+function matches(encoder, str)
 {
     var returnValue = /[^],[^]/.test(str);
     return returnValue;
-};
+}
+
+registerOptimizer('comma', createOptimizer, matches);

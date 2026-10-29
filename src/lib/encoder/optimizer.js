@@ -1,11 +1,4 @@
-import Encoder                      from '../encoder/encoder-base';
-import { assignNoEnum }             from '../obj-utils';
-import createAtobOptimizer          from './atob-optimizer';
-import createBtoaOptimizer          from './btoa-optimizer';
-import createCommaOptimizer         from './comma-optimizer';
-import createShortcutOptimizer      from './shortcut-optimizer';
-import createSurrogatePairOptimizer from './surrogate-pair-optimizer';
-import createToStringOptimizer      from './to-string-optimizer';
+import { _Object_keys, createEmpty } from '../obj-utils';
 
 /** @typedef {import('../solution').AbstractSolution}       AbstractSolution */
 /** @typedef {import('../clustering-plan').ClusteringPlan}  ClusteringPlan */
@@ -92,42 +85,32 @@ import createToStringOptimizer      from './to-string-optimizer';
  * @returns {void}
  */
 
-var CREATE_OPTIMIZER_MAP =
-{
-    __proto__:      null,
-    atob:           createAtobOptimizer,
-    btoa:           createBtoaOptimizer,
-    comma:          createCommaOptimizer,
-    shortcut:       createShortcutOptimizer,
-    surrogatePair:  createSurrogatePairOptimizer,
-    toString:       createToStringOptimizer,
-};
+var OPTIMIZER_MAP = createEmpty();
 
-function addOptimizer(optimizerList, createOptimizer, str, subKey)
+function addOptimizer(optimizerList, matches, str, key, subKey)
 {
-    if (createOptimizer.matches(this, str, subKey))
+    if (matches(this, str, subKey))
     {
-        var key = createOptimizer.key;
         var optimizer = this._getOptimizer(key, subKey);
         optimizerList.push(optimizer);
     }
 }
 
-function getOptimizer(key, subKey)
+export function getOptimizer(key, subKey)
 {
     var optimizers = this._optimizers;
     var optimizerKey = subKey != null ? key + ':' + subKey : key;
     var optimizer = optimizers[optimizerKey];
     if (!optimizer)
     {
-        var createOptimizer = CREATE_OPTIMIZER_MAP[key];
+        var createOptimizer = OPTIMIZER_MAP[key]._create;
         optimizer = createOptimizer(this, subKey);
         optimizers[optimizerKey] = optimizer;
     }
     return optimizer;
 }
 
-function getOptimizerList(str, optimize)
+export function getOptimizerList(str, optimize)
 {
     var optimizerList = [];
     if (optimize)
@@ -135,12 +118,16 @@ function getOptimizerList(str, optimize)
         var normalizeOption;
         if (typeof optimize === 'object')
         {
-            var defaultOptValue = 'default' in optimize ? optimize.default : true;
+            var defaultOptValue = optimize.default;
+            if (defaultOptValue == null)
+                defaultOptValue = true;
             normalizeOption =
             function (key)
             {
                 var optName = key + 'Opt';
-                var optValue = optName in optimize ? optimize[optName] : defaultOptValue;
+                var optValue = optimize[optName];
+                if (optValue == null)
+                    optValue = defaultOptValue;
                 return optValue;
             };
         }
@@ -152,22 +139,34 @@ function getOptimizerList(str, optimize)
                 return true;
             };
         }
-        for (var key in CREATE_OPTIMIZER_MAP)
-        {
-            if (normalizeOption(key))
+        if (!sortedKeys)
+            sortedKeys = _Object_keys(OPTIMIZER_MAP).sort(); // Do not rely on registration order.
+        sortedKeys.forEach
+        (
+            function (key)
             {
-                var createOptimizer = CREATE_OPTIMIZER_MAP[key];
-                var addThisOptimizer = addOptimizer.bind(this, optimizerList, createOptimizer, str);
-                var subKeys = createOptimizer.subKeys;
-                if (subKeys)
-                    subKeys.forEach(addThisOptimizer);
-                else
-                    addThisOptimizer();
-            }
-        }
+                if (normalizeOption(key))
+                {
+                    var entry = OPTIMIZER_MAP[key];
+                    var addThisOptimizer =
+                    addOptimizer.bind(this, optimizerList, entry._matches, str, key);
+                    var subKeys = entry._subKeys;
+                    if (subKeys)
+                        subKeys.forEach(addThisOptimizer);
+                    else
+                        addThisOptimizer();
+                }
+            },
+            this
+        );
     }
     return optimizerList;
 }
 
-assignNoEnum
-(Encoder.prototype, { _getOptimizer: getOptimizer, _getOptimizerList: getOptimizerList });
+export function registerOptimizer(key, createOptimizer, matches, subKeys)
+{
+    OPTIMIZER_MAP[key] = { _create: createOptimizer, _matches: matches, _subKeys: subKeys };
+    sortedKeys = undefined;
+}
+
+var sortedKeys;

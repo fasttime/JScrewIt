@@ -31,6 +31,7 @@ import
     tryCreateRegExp,
 }
 from '../obj-utils';
+import { getOptimizer, getOptimizerList }           from './optimizer';
 import
 { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL, ScrewBuffer }
 from '../screw-buffer';
@@ -723,6 +724,10 @@ assignNoEnum
             solution = shortestOf.apply(null, solutions);
             return solution;
         },
+
+        _getOptimizer:              getOptimizer,
+
+        _getOptimizerList:          getOptimizerList,
 
         _guardResolution:           noop,
 

@@ -1,5 +1,7 @@
-import { SHORTCUTS }                                                        from '../definitions';
-import { _Array_prototype_forEach_call, _Object_keys, createEmpty, noop }   from '../obj-utils';
+import { registerOptimizer }    from '../encoder/optimizer';
+import { SHORTCUTS }            from '../definitions';
+import { _Array_prototype_forEach_call, _Object_keys, createEmpty, noop }
+from '../obj-utils';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
@@ -13,7 +15,7 @@ function createCharSet(charInfos, index)
     return charSet;
 }
 
-export default function createOptimizer(encoder, shortcut)
+function createOptimizer(encoder, shortcut)
 {
     var optimizer;
     var discreteAppendLength = 0;
@@ -120,12 +122,12 @@ function makeOptimizer
     return optimizer;
 }
 
-createOptimizer.key = 'shortcut';
-createOptimizer.subKeys = _Object_keys(SHORTCUTS);
-createOptimizer.matches =
-function (encoder, str, shortcut)
+function matches(encoder, str, shortcut)
 {
     var entry = SHORTCUTS[shortcut];
     var returnValue = encoder.hasFeatures(entry.mask) && str.indexOf(shortcut) >= 0;
     return returnValue;
-};
+}
+
+var subKeys = _Object_keys(SHORTCUTS);
+registerOptimizer('shortcut', createOptimizer, matches, subKeys);

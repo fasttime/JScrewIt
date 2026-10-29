@@ -14,6 +14,7 @@
 //
 // The argument is replaced without optimizations.
 
+import { registerOptimizer }            from '../encoder/optimizer';
 import { _Math_min, createEmpty }       from '../obj-utils';
 import { SimpleSolution, SolutionType } from '../solution';
 
@@ -34,7 +35,7 @@ function isClusterable(solution)
     return returnValue;
 }
 
-export default function createOptimizer(encoder)
+function createOptimizer(encoder)
 {
     function appendLengthOf(solution)
     {
@@ -105,10 +106,10 @@ export default function createOptimizer(encoder)
     return optimizer;
 }
 
-createOptimizer.key = 'btoa';
-createOptimizer.matches =
-function (encoder, str)
+function matches(encoder, str)
 {
     var returnValue = /[+/\dA-Za-z]{4}/.test(str);
     return returnValue;
-};
+}
+
+registerOptimizer('btoa', createOptimizer, matches);
