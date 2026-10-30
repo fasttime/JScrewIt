@@ -11,7 +11,7 @@ function createCharSet(charInfos, index)
     var charSet = createEmpty();
     var charInfo;
     while (charInfo = charInfos[index++])
-        charSet[charInfo.char] = null;
+        charSet[charInfo._char] = null;
     return charSet;
 }
 
@@ -31,12 +31,12 @@ function createOptimizer(encoder, shortcut)
             discreteAppendLength += charAppendLength;
             var charInfo = charMap[char];
             if (charInfo)
-                charInfo.count++;
+                charInfo._count++;
             else
             {
                 charInfo =
                 charMap[char] =
-                { appendLength: charAppendLength, char: char, count: 1 };
+                { _appendLength: charAppendLength, _char: char, _count: 1 };
                 charInfos.push(charInfo);
             }
         }
@@ -52,7 +52,7 @@ function createOptimizer(encoder, shortcut)
         (
             function (charInfo1, charInfo2)
             {
-                var result = charInfo1.appendLength - charInfo2.appendLength;
+                var result = charInfo1._appendLength - charInfo2._appendLength;
                 return result;
             }
         );
@@ -61,13 +61,14 @@ function createOptimizer(encoder, shortcut)
         for (var index = 0; restCount; index++)
         {
             var charInfo = charInfos[index];
-            var charAppendLength = charInfo.appendLength;
+            var charAppendLength = charInfo._appendLength;
             if (charAppendLength * restCount > restLength)
                 break;
-            var count = charInfo.count;
+            var count = charInfo._count;
             restLength -= charAppendLength * count;
             restCount -= count;
         }
+        // The calculated value is only used when `restCount` is positive.
         var optimizedCharAppendLength = restLength / restCount | 0;
         var charSet = createCharSet(charInfos, index);
         optimizer =

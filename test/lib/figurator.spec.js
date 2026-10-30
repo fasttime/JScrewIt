@@ -63,6 +63,9 @@
                         {
                             if (altJoinerToLastIndexMap[altJoiner] == null)
                             {
+                                expect(altJoiner)
+                                .not
+                                .toBe('', 'alternative joiner should not be the joiner');
                                 expect(altJoiner).not.toMatch
                                 (
                                     /false|true/,
@@ -112,7 +115,12 @@
                         if (altJoiner != null)
                         {
                             if (altJoinerToLastIndexMap[altJoiner] == null)
+                            {
+                                expect(altJoiner)
+                                .not
+                                .toBe(joiner, 'alternative joiner should not be the joiner');
                                 altJoinerToLastIndexMap[altJoiner] = -1;
+                            }
 
                             // Test that none of the figures so far contains this alternative
                             // joiner.

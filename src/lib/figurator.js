@@ -1,4 +1,10 @@
-import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_FALSE, APPEND_LENGTH_OF_SMALL_E }
+import
+{
+    APPEND_LENGTH_OF_DIGIT_0,
+    APPEND_LENGTH_OF_FALSE,
+    APPEND_LENGTH_OF_SMALL_E,
+    APPEND_LENGTH_OF_TRUE,
+}
 from './append-lengths';
 import { _Array_prototype_push_apply, _Object, createEmpty } from './obj-utils';
 
@@ -7,7 +13,8 @@ export default function createFigurator(startValues, joiner)
     function createPart(value, sortLength, isAltJoiner)
     {
         var part = createFigure(value, sortLength);
-        part.isAltJoiner = isAltJoiner && startValues.indexOf(part.valueOf()) < 0;
+        part._isAltJoiner =
+        isAltJoiner && value !== joiner && startValues.indexOf(part.valueOf()) < 0;
         return part;
     }
 
@@ -56,13 +63,13 @@ export default function createFigurator(startValues, joiner)
             var figureList = figureLists[sortLength] || (figureLists[sortLength] = []);
             var figure = createFigure(value, sortLength);
             figureList.push(figure);
-            part.isAltJoiner = false;
+            part._isAltJoiner = false;
             for (;; altJoinerPartIndex++)
             {
                 var altJoinerPart = parts[altJoinerPartIndex];
                 if (!altJoinerPart)
                     break;
-                if (altJoinerPart.isAltJoiner)
+                if (altJoinerPart._isAltJoiner)
                 {
                     figure._altJoiner = altJoinerPart.valueOf();
                     break;
@@ -80,7 +87,7 @@ export default function createFigurator(startValues, joiner)
     [
         createPart('',          0,                          false),
         createPart('false',     APPEND_LENGTH_OF_FALSE,     true),
-        createPart('true',      5,                          true),
+        createPart('true',      APPEND_LENGTH_OF_TRUE,      true),
         createPart('0',         APPEND_LENGTH_OF_DIGIT_0,   true),
         createPart('undefined', 7,                          true),
         createPart('1',         8,                          true),

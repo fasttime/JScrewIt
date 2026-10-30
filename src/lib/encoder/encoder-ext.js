@@ -271,15 +271,15 @@ export function createReindexMap(count, radix, amendingCount, coerceToInt)
         var str = coerceToInt && !index ? '' : index.toString(radix);
         var reindexStr = amendingCount ? str.replace(regExp, replacer) : str;
         var reindex = range[index] = _Object(reindexStr);
-        reindex.sortLength = getSortLength();
-        reindex.index = index;
+        reindex._sortLength = getSortLength();
+        reindex._index = index;
     }
     range.sort
     (
         function (reindex1, reindex2)
         {
             var result =
-            reindex1.sortLength - reindex2.sortLength || reindex1.index - reindex2.index;
+            reindex1._sortLength - reindex2._sortLength || reindex1._index - reindex2._index;
             return result;
         }
     );
@@ -399,8 +399,8 @@ function encodeByDblDict
         function (freq, index)
         {
             var figure = figurator(index);
-            charMap[freq.char] = figure;
-            minCharIndexArrayStrLength += freq.count * figure.sortLength;
+            charMap[freq._char] = figure;
+            minCharIndexArrayStrLength += freq._count * figure.sortLength;
             return figure;
         }
     );
@@ -409,7 +409,7 @@ function encodeByDblDict
     (
         function (freq)
         {
-            return freq.char;
+            return freq._char;
         }
     );
     var legend = encodeDictLegend(encoder, dictChars, maxLength - minCharIndexArrayStrLength);
@@ -502,9 +502,9 @@ function getFrequencyList(inputData)
             {
                 (
                     charMap[char] ||
-                    (charMap[char] = { char: char, charCode: char.charCodeAt(), count: 0 })
+                    (charMap[char] = { _char: char, _charCode: char.charCodeAt(), _count: 0 })
                 )
-                .count++;
+                ._count++;
             }
         );
         var charList = _Object_keys(charMap);
@@ -522,7 +522,7 @@ function getFrequencyList(inputData)
         (
             function (freq1, freq2)
             {
-                var diff = freq2.count - freq1.count || freq1.charCode - freq2.charCode;
+                var diff = freq2._count - freq1._count || freq1._charCode - freq2._charCode;
                 return diff;
             }
         );
@@ -588,11 +588,11 @@ function shouldCoerceToInt(reindexMap, freqList)
     for (var reindexIndex = 0; ; reindexIndex++)
     {
         var reindex = reindexMap[reindexIndex];
-        var sortLength = reindex.sortLength;
-        saving += freqList[reindexIndex].count * (sortLength - prevSortLength);
+        var sortLength = reindex._sortLength;
+        saving += freqList[reindexIndex]._count * (sortLength - prevSortLength);
         if (saving > 0)
             return true;
-        if (!reindex.index)
+        if (!reindex._index)
             return false;
         prevSortLength = sortLength;
     }
@@ -872,7 +872,7 @@ var trueZeroFigurator   = createFigurator(['true', '0'], '');
 
         Or:
 
-        "2false3falsefalse1false10falsefalse".split(false).map(Function(
+        "2false3falsefalse1false10false".split(false).map(Function(
         "return function(falsefalse){return function(undefined){return " +
         "falsefalse[parseInt(+undefined,4)]}}")()("ELTWV")).join([])
 
@@ -1118,7 +1118,7 @@ var trueZeroFigurator   = createFigurator(['true', '0'], '');
 
         /* -------------------------------------------------------------------------------------- *\
 
-        Encodes any text as a string using only the mininal set of optimizations.
+        Encodes any text as a string using the full set of optimizations.
 
         \* -------------------------------------------------------------------------------------- */
 
@@ -1304,10 +1304,10 @@ assignNoEnum
                 function (freq, index)
                 {
                     var reindex = reindexMap[index];
-                    var char = freq.char;
+                    var char = freq._char;
                     charMap[char] = reindex;
-                    minCharIndexArrayStrLength += freq.count * reindex.sortLength;
-                    dictChars[reindex.index] = char;
+                    minCharIndexArrayStrLength += freq._count * reindex._sortLength;
+                    dictChars[reindex._index] = char;
                 }
             );
             var legend = encodeDictLegend(this, dictChars, maxLength - minCharIndexArrayStrLength);
